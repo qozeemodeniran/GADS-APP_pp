@@ -16,4 +16,6 @@
         android:text="Hello World, Welcome to GADS APP."
         android:textSize="20sp"
         android:layout_centerInParent="true"/>
+
+
 </RelativeLayout>

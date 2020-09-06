@@ -17,8 +17,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/logo_id"
         android:layout_centerHorizontal="true"
-        android:text="GADS2020 LEADER-BOARD APP"
-        android:textSize="30dp"
+        android:text="@string/gads2020_leader_board_app"
+        android:textSize="30sp"
         android:textColor="@color/blue"/>
 
 </RelativeLayout>
