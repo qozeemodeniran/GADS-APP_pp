@@ -3,9 +3,12 @@
     <string name="gads2020_leader_board_app">GADS2020 LEADER-BOARD APP</string>
     <string name="hello_world_welcome_to_gads_app">Hello World, Welcome to GADS APP.</string>
     <string name="leaderboard">LEADERBOARD</string>
+<!--    <string name="leader_board">LEADERBOARD</string>-->
+    <string name="submit">Submit</string>
+<!--    <string name="submit">Submit</string>-->
     <string name="leader_board">LEADERBOARD</string>
-    <string name="submit">Submit</string>
-    <string name="submit">Submit</string>
-    <string name="leader_board">LEADERBOARD</string>
-    <string name="submit">Submit</string>
+<!--    <string name="submit">Submit</string>-->
+    <string name="learning_leaders">Learning Leaders</string>
+    <string name="skill_iq_leaders">Skill IQ Leaders</string>
+<!--    <string name="learning_leaders">learning_leaders</string>-->
 </resources>
