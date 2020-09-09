@@ -1,35 +1,21 @@
 package com.example.gads;
 
-
-
-
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
-
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-
 import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
-
 
 public class MainActivity extends AppCompatActivity {
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         FragmentManager fm = getSupportFragmentManager();
 
@@ -38,13 +24,11 @@ public class MainActivity extends AppCompatActivity {
         pa.setAdapter(sa);
 
         // Up to here, we have working scrollable pages
-
         final TabLayout tabLayout = findViewById(R.id.tabLayout);
         tabLayout.addTab(tabLayout.newTab().setText("Learning Leaders"));
         tabLayout.addTab(tabLayout.newTab().setText("Skill IQ Leaders"));
 
         // Now we have tabs, NOTE: I am hardcoding the order, you'll want to do something smarter
-
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -70,7 +54,8 @@ public class MainActivity extends AppCompatActivity {
 
         // And now we have tabs that, when clicked, navigate to the correct page
     }
-    private class ViewStateAdapter extends FragmentStateAdapter {
+
+    private static class ViewStateAdapter extends FragmentStateAdapter {
 
         public ViewStateAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
             super(fragmentManager, lifecycle);
