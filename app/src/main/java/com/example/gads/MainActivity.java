@@ -7,6 +7,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -27,76 +29,70 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        FragmentManager fm = getSupportFragmentManager();
+
+        ViewStateAdapter sa = new ViewStateAdapter(fm, getLifecycle());
+        final ViewPager2 pa = findViewById(R.id.pager);
+        pa.setAdapter(sa);
+
+        // Up to here, we have working scrollable pages
+
+        final TabLayout tabLayout = findViewById(R.id.tabLayout);
+        tabLayout.addTab(tabLayout.newTab().setText("Learning Leaders"));
+        tabLayout.addTab(tabLayout.newTab().setText("Skill IQ Leaders"));
+
+        // Now we have tabs, NOTE: I am hardcoding the order, you'll want to do something smarter
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                pa.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+        pa.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                tabLayout.selectTab(tabLayout.getTabAt(position));
+            }
+        });
+
+        // And now we have tabs that, when clicked, navigate to the correct page
+    }
+    private class ViewStateAdapter extends FragmentStateAdapter {
+
+        public ViewStateAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
+            super(fragmentManager, lifecycle);
+        }
+
+        @NonNull
+        @Override
+        public Fragment createFragment(int position) {
+            // Hardcoded in this order, you'll want to use lists and make sure the titles match
+            if (position == 0) {
+                return new LearningLeaders();
+            }
+            return new SkillLeaders();
+        }
+
+        @Override
+        public int getItemCount() {
+            // Hardcoded, use lists
+            return 2;
+        }
     }
 
 }
 
-
-class CollectionDemoFragment extends Fragment {
-    // When requested, this adapter returns a DemoObjectFragment,
-    // representing an object in the collection.
-    DemoCollectionAdapter demoCollectionAdapter;
-    ViewPager2 viewPager;
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.collection_demo, container, false);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        TabLayout tabLayout = view.findViewById(R.id.tab_layout);
-        new TabLayoutMediator(tabLayout, viewPager,
-                (tab, position) -> tab.setText(" " + (position + 1))
-        ).attach();
-        demoCollectionAdapter = new DemoCollectionAdapter(this);
-        viewPager = view.findViewById(R.id.pager);
-        viewPager.setAdapter(demoCollectionAdapter);
-    }
-}
-
-class DemoCollectionAdapter extends FragmentStateAdapter {
-    public DemoCollectionAdapter(Fragment fragment) {
-        super(fragment);
-    }
-
-    @NonNull
-    @Override
-    public Fragment createFragment(int position) {
-        // Return a NEW fragment instance in createFragment(int)
-        Fragment fragment = new DemoObjectFragment();
-        Bundle args = new Bundle();
-        // Our object is just an integer :-P
-        args.putInt(DemoObjectFragment.ARG_OBJECT, position + 1);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public int getItemCount() {
-        return 100;
-    }
-}
-
-// Instances of this class are fragments representing a single
-// object in our collection.
-class DemoObjectFragment extends Fragment {
-    public static final String ARG_OBJECT = "object";
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_collection_object, container, false);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        Bundle args = getArguments();
-        ((TextView) view.findViewById(android.R.id.text1))
-                .setText(Integer.toString(args.getInt(ARG_OBJECT)));
-    }
-}
 
