@@ -2,13 +2,18 @@ package com.example.gads;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.Lifecycle;
-import androidx.viewpager2.adapter.FragmentStateAdapter;
-import androidx.viewpager2.widget.ViewPager2;
+import androidx.viewpager.widget.ViewPager;
+
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+
 import com.google.android.material.tabs.TabLayout;
+import com.example.gads.Adapters.ViewPagerAdapter;
+import com.example.gads.Fragments.LearningLeadersFragment;
+import com.example.gads.Fragments.SkillIQLeadersFragment;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -17,67 +22,34 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        FragmentManager fm = getSupportFragmentManager();
+        setSupportActionBar(findViewById(R.id.main_toolbar));
 
-        ViewStateAdapter sa = new ViewStateAdapter(fm, getLifecycle());
-        final ViewPager2 pa = findViewById(R.id.pager);
-        pa.setAdapter(sa);
+        ViewPager viewPager = findViewById(R.id.main_viewpager);
+        TabLayout tabLayout = findViewById(R.id.main_tabLayout);
 
-        // Up to here, we have working scrollable pages
-        final TabLayout tabLayout = findViewById(R.id.tabLayout);
-        tabLayout.addTab(tabLayout.newTab().setText("Learning Leaders"));
-        tabLayout.addTab(tabLayout.newTab().setText("Skill IQ Leaders"));
+        tabLayout.setupWithViewPager(viewPager);
 
-        // Now we have tabs, NOTE: I am hardcoding the order, you'll want to do something smarter
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                pa.setCurrentItem(tab.getPosition());
-            }
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), 0);
+        viewPagerAdapter.addFragments(new LearningLeadersFragment(this), "Learning Leaders");
+        viewPagerAdapter.addFragments(new SkillIQLeadersFragment(this), "Skill IQ Leaders");
 
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-        pa.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-            @Override
-            public void onPageSelected(int position) {
-                tabLayout.selectTab(tabLayout.getTabAt(position));
-            }
-        });
-
-        // And now we have tabs that, when clicked, navigate to the correct page
+        viewPager.setAdapter(viewPagerAdapter);
     }
 
-    private static class ViewStateAdapter extends FragmentStateAdapter {
 
-        public ViewStateAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
-            super(fragmentManager, lifecycle);
-        }
-
-        @NonNull
-        @Override
-        public Fragment createFragment(int position) {
-            // Hardcoded in this order, you'll want to use lists and make sure the titles match
-            if (position == 0) {
-                return new LearningLeaders();
-            }
-            return new SkillLeaders();
-        }
-
-        @Override
-        public int getItemCount() {
-            // Hardcoded, use lists
-            return 2;
-        }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_submit) {
+            startActivity(new Intent(this, ProjectSubmission.class));
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }
 
 

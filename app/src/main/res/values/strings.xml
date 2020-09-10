@@ -13,4 +13,11 @@
     <string name="hello_learning_leaders">Hello learning leaders.</string>
     <string name="hello_skill_leaders">Hello skill leaders.</string>
     <!--    <string name="learning_leaders">learning_leaders</string>-->
+
+        <string name="first_name">First Name</string>
+        <string name="last_name">Last Name</string>
+        <string name="email_address">Email Address</string>
+        <string name="project_on_github_link">Project on Github (Link)</string>
+        <string name="project_submission">Project Submission</string>
+        <string name="error">Error</string>
 </resources>
